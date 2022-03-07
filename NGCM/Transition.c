@@ -151,8 +151,12 @@ void l_transIdle(void) {
 	if( !sysFlags.restarted ) {    // t100 whenever there is dispense/ refill removal/refill timeout as valve status change/
 		
 		if(bagInsertedErrorFlag==0)  // do not transmit when ekey present/ refill error present as already one tx packet is sent in bag inserted function // t100
-		{SmartLink_serializeTxPacket(Uart_txBuf);
-		Uart_transmit(Uart_txBuf);}
+		{
+			#ifndef DEBUG_SERIAL_SPIT
+				SmartLink_serializeTxPacket(Uart_txBuf);
+				Uart_transmit(Uart_txBuf);
+			#endif
+		}
 	} else {
 		sysFlags.restarted = 0;				//system restart is now over		
 	}
@@ -336,6 +340,10 @@ void Transition_bagInserted(void) {
 				}
 				
 				sysFlags.usingResetKey = 0;							//this is not the reset key
+				//Clem
+				#ifdef DEBUG_SERIAL_SPIT
+					Uart_transmit("This is NOT RESET KEY\r\n");
+				#endif				
 				
 			} else {	//this is reset key
 				sysData.imprintCounter = 0;							//probably redundant
@@ -347,6 +355,10 @@ void Transition_bagInserted(void) {
 				}
 				
 				sysFlags.usingResetKey = 1;
+				//Clem
+				#ifdef DEBUG_SERIAL_SPIT
+					Uart_transmit("This is a RESET KEY\r\n");
+				#endif				
 			}
 						
 #endif	//!DEBUG_SKIP_EKEY_CHECK
@@ -403,11 +415,13 @@ void Transition_bagInserted(void) {
 		}
 	} else {	//serial debug mode is locked in. No ekey actions are executed
 		StateMachine_currentState = ST_IDLE;	
-	}	
-	//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-	SmartLink_serializeTxPacket(Uart_txBuf);  // t100
-	Uart_transmit(Uart_txBuf);// t100
-	//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn-
+	}
+	#ifndef DEBUG_SERIAL_SPIT	
+		//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+		SmartLink_serializeTxPacket(Uart_txBuf);  // t100
+		Uart_transmit(Uart_txBuf);// t100
+		//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn-
+	#endif
 	
 	//PRR &= ~(1<<PRUSART0);
 	//Uart_init();

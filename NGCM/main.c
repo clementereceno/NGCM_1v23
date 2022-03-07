@@ -19,6 +19,7 @@
 #include "Uart.h"
 #include "SmartLink.h"
 
+
 static uint8_t l_flags;
 uint8_t l_lastInputs;
 static void stackEvents(void);
@@ -33,6 +34,7 @@ bit pending_bag_inserted=0, eventSwitchReleasedFlag=0;   // j100
 int main(void) {
 	int8_t eventsDone, newEvent;
 	unsigned char j=0; // t100
+	const char *msg;
 	
 	System_clockInit();
 	
@@ -47,6 +49,7 @@ int main(void) {
 	
 	l_lastInputs = PIND & 0b00011101;	//switch input bits and Rxd
 	
+
 	while(1) {						//main program loop
         eventsDone = 0;
 
@@ -187,11 +190,13 @@ static void stackEvents(void) {
 				sysFlags.coverOpen = 0;  // t100
 				sysFlags.ekeyPresent = 0; // t100
 				
+				//#if !DEBUG_SERIAL_SPIT_EN
 				//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn 
 				if((bagInsertedErrorFlag==1)||(bagIdealTimeoutFlag==1)) //t100
 				{SmartLink_serializeTxPacket(Uart_txBuf);  // t100
 				Uart_transmit(Uart_txBuf);}// t100
 				//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn-
+				//#endif
 			}
 			BIT_SET(l_lastInputs, PIND3);
 		} else {

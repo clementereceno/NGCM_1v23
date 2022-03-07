@@ -25,6 +25,7 @@
 char Uart_txBuf[UART_TX_BUF_SIZE];
 char Uart_rxBuf[UART_RX_BUF_SIZE];
 
+
 volatile uint8_t Uart_rxBufIdx;
 
 void Uart_init(void);

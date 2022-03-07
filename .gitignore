@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+NGCM/Debug/NGCM.srec
+NGCM/Debug/NGCM.lss
+NGCM/Debug/Makefile
+.vs/NGCM/v14/.atsuo
+*.cproj
+NGCM/Debug/Makefile
+NGCM/Debug/NGCM.srec
