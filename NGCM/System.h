@@ -46,6 +46,9 @@
 #define DEBUG_SKIP_SOAP_LOCKOUT	0	// 1 = refill valve will open even if the usage counter has zero units / 0 = refill valve will lockout //i100
 #define DEBUG_SKIP_LV_CHECKS	0
 
+#define DEBUG_SERIAL_SPIT_EN	1
+#define DEBUG_WRTBCKFULL2EKEY	0
+
 //#define DEBUG_OP_AMP_ON
 //#define DEBUG_ENABLE_SILLY_LIGHT_SHOW
 #define DEBUG_BYPASS_MINIMUM_VALVE_CYCLE_TIME 0
@@ -67,6 +70,10 @@
 #define DEBUG_SKIP_WEIGHT_DOCK 1
 #endif
 
+#if DEBUG_SERIAL_SPIT_EN
+#undef DEBUG_SERIAL_SPIT
+#define DEBUG_SERIAL_SPIT	1
+#endif
 //Select CPU frequency here. Maximum is 8MHz
 #define F_CPU_BASE	8000000UL
 

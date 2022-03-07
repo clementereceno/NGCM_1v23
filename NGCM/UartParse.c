@@ -13,6 +13,7 @@
 #include <avr/eeprom.h>
 #include "Adc.h"
 #include "SmartLink.h"
+#include "debug.h"		//Clem
 
 extern SYSTEM_FLAGS sysFlags;
 extern SYSTEM_DATA sysData;
@@ -44,7 +45,7 @@ bit lockSerialMode;
 void UartParse_rxMsg() {
 	const char *cptr;
 	uint8_t msgLen;
-	uint16_t temp, temp1;
+	uint16_t temp, temp1, temp2;
 	TAG_DATA *td;
 	char buf[60];
 	uint8_t configCode;
@@ -178,6 +179,14 @@ void UartParse_rxMsg() {
 					Ekey_program();
 					MLX_MODU_OFF();
 					break;
+					
+				case 'c':			//Clem
+					sysData.currentSoapWeight = Adc_getWeightUnits();
+					Util_byteToString(Uart_DtxBuf, (uint8_t)sysData.currentSoapWeight);
+					Util_strcat(Uart_DtxBuf, "\r\n");
+					Uart_transmit(Uart_DtxBuf);
+									
+				break;					
 				
 				case 'u':
 					sysFlags.unlockSerialModeFlag = 1;		//unlock the serial mode after this transmission
@@ -191,6 +200,7 @@ void UartParse_rxMsg() {
 				case 'w':
 					sysData.currentSoapWeight = Adc_getWeightUnits();
 					Util_byteToString(Uart_txBuf, (uint8_t)sysData.currentSoapWeight);
+					
 					break;
 			
 				default:
@@ -211,7 +221,8 @@ void UartParse_rxMsg() {
 		if(!sysFlags.dispensePending) {				//SmartLink may set this pending. No response required.
 			if(cptr == NULL) {
 				Util_strcat(Uart_txBuf, "\r\n");
-				Uart_transmit(Uart_txBuf);		
+				Uart_transmit(Uart_txBuf);
+			
 			} else {
 				Uart_transmit( (char *)cptr );
 			}
