@@ -40,7 +40,6 @@ void db_setTxPacket(void) {
 	db_txData.SoapRemainingFills = System_fillStats.ekeyRemainingFills;	
 	db_txData.ReservoirWeightNow = sysData.currentSoapWeight;
 	db_txData.initialWeight = System_fillStats.initialWeight;	
-	db_txData.ntused05 = 0;
 	db_txData.status = dbgFlags.status;
 	
 }
