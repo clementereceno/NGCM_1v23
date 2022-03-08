@@ -23,6 +23,11 @@ typedef struct {
 					uint8_t			ReservoirWeightNow;
 					uint8_t			initialWeight;
 					uint8_t			ntused05;
+					uint8_t			ntused06;
+					uint8_t			ntused07;
+					uint8_t			ntused08;
+					uint8_t			ntused09;
+					uint8_t			ntused10;
 					
 					union {
 						struct {
@@ -38,10 +43,10 @@ typedef struct {
 						uint8_t	status;
 					};
 				};
-				uint8_t		packet3[7];
+				uint8_t		packet3[12];
 			};
 		};
-		uint8_t dbytes[7];
+		uint8_t dbytes[12];
 	};
 } DB_TX_PACKET;
 
