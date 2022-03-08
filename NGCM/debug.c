@@ -12,6 +12,10 @@
 
 DB_TX_PACKET db_txData;
 
+extern SYSTEM_FLAGS sysFlags;
+extern SYSTEM_DATA sysData;
+extern DEBUG_FLAGS dbgFlags;
+
 static void db_setTxPacket(void);
 
 void Debug_serializeTxPacket(char *dest) {
@@ -32,10 +36,11 @@ void db_setTxPacket(void) {
 	
 	//assign here need to print
 	db_txData.weightReceived = System_fillStats.weightUnitsReceived;
-	db_txData.ntused01 = 0;
-	db_txData.ntused03 = 0;
-	db_txData.ntused04 = 0;
+	db_txData.SoapRemainingWeight = System_fillStats.ekeyRemainingWeightUnits;
+	db_txData.SoapRemainingFills = System_fillStats.ekeyRemainingFills;	
+	db_txData.ReservoirWeightNow = sysData.currentSoapWeight;
+	db_txData.initialWeight = System_fillStats.initialWeight;	
 	db_txData.ntused05 = 0;
-	db_txData.ntused06 = 0;
+	db_txData.status = dbgFlags.status;
 	
 }

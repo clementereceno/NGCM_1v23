@@ -19,6 +19,7 @@
 
 extern SYSTEM_FLAGS sysFlags;
 extern SYSTEM_DATA sysData;
+extern DEBUG_FLAGS dbgFlags;
 
 extern struct_EEPROM_MAP EEPROM l_eeprom; // 19aug19
 extern char bagIdealTimeoutFlag,bagInsertedErrorFlag;
@@ -207,6 +208,10 @@ void StateMachine_init() {
 	}
 #endif
 
+#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+	dbgFlags.allFlags = 0;
+#endif
+
 	sysFlags.allFlags = 0;		//clear all system status flags etc.
 	sysFlags.restarted = 1;		//flag to indicate that the system has rebooted
 	
@@ -358,16 +363,16 @@ void StateMachine_bagInsertedTick(void) {
 	} else {
 		if( !sysFlags.usingResetKey ) {
 			#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+				dbgFlags.ResetKey = 0;
 				Debug_serializeTxPacket(Uart_txBuf);
 				Uart_transmit(Uart_txBuf);
-				//Util_byteToString(Uart_txBuf, (int8_t)System_fillStats.weightUnitsReceived);
-				//Util_strcat(Uart_txBuf, SPACE);
-				//Uart_transmit(Uart_txBuf);	
 			#endif	
 			//does the bag contain any more soap? And the number of bag usages good?
 			if( (System_fillStats.weightUnitsReceived < System_fillStats.ekeyRemainingWeightUnits)
 				&& (System_fillStats.ekeyRemainingFills > 0) ) {
-
+				#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+					dbgFlags.bagGoodFlag = 1;
+				#endif
 				//op amp is powered on in transition
 				Io_switchToADC();																	//temporarily switch to ADC mode for measuring soap
 				sysData.currentSoapWeight = Adc_getWeightUnits();											//what is the weight now?
@@ -494,6 +499,9 @@ void StateMachine_bagInsertedTick(void) {
 				//}		
 			}
 		}	//reset key is inserted so no weight check etc is done
+		#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+			dbgFlags.ResetKey = 1;
+		#endif		
 		bagIdealTimeoutFlag =0; //t100	
 	}	//tick counter exit check
 	

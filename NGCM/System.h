@@ -145,6 +145,47 @@ typedef volatile union {
 	uint32_t allFlags;
 } SYSTEM_FLAGS;
 
+typedef volatile union {
+	struct {
+		union {
+			struct {
+				uint8_t	bagGoodFlag		:1;	//b0
+				uint8_t	ntusedbit1	:1;	//wrong ekey code
+				uint8_t	ntusedbit2	:1;
+				uint8_t	ntusedbit3	:1;
+				uint8_t	ntusedbit4		:1;
+				uint8_t	ntusedbit5	:1;
+				uint8_t	ntusedbit6	:1;
+				uint8_t	ResetKey	:1;	//b7
+			};
+			uint8_t status;
+		};
+		
+		union {
+			struct {
+				uint8_t ntusedbit8	:1;	//b0
+				uint8_t ntusedbit9	:1;
+				uint8_t ntusedbit10	:1;
+				uint8_t ntusedbit11	:1;
+				uint8_t ntusedbit12	:1;
+				uint8_t ntusedbit13	:1;
+				uint8_t ntusedbit14	:1;
+				uint8_t ntusedbit15	:1;	//b7
+			};
+			uint8_t ntusedStats;
+		};
+		
+		uint8_t ntusedbit16			:1;
+		uint8_t ntusedbit17			:1;
+		uint8_t ntusedbit18			:1;
+		uint8_t	ntusedbit19			:1;
+		uint8_t ntusedbit20			:1;
+		uint8_t ntusedbit21			:1;
+		uint8_t ntusedbit22			:1;
+	};
+	uint32_t allFlags;
+} DEBUG_FLAGS;
+
 #define SYSTEM_INTFLG_PCINT2			((uint8_t)1)
 #define SYSTEM_INTFLG_MOTOR_OVERLOAD	((uint8_t)2)
 #define SYSTEM_INTFLG_PCINT0			((uint8_t)3)
