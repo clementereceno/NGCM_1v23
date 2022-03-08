@@ -154,6 +154,9 @@
     <Compile Include="BitQueue.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="debug.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="debug.h">
       <SubType>compile</SubType>
     </Compile>
