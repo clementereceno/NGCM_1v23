@@ -53,6 +53,7 @@ struct_EEPROM_MAP EEPROM l_eeprom;
 
 SYSTEM_FLAGS sysFlags;
 SYSTEM_DATA sysData;
+DEBUG_FLAGS dbgFlags;
 
 extern uint8_t memInc; // 22aug19
 extern uint16_t memWearout; // 22aug19
