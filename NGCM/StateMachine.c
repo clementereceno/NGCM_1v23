@@ -12,6 +12,10 @@
 #include "Timer.h"
 #include "UartParse.h"
 #include "SmartLink.h"
+#include "Uart.h"
+#include "debug.h"
+
+#define SPACE	" "
 
 extern SYSTEM_FLAGS sysFlags;
 extern SYSTEM_DATA sysData;
@@ -341,6 +345,11 @@ void StateMachine_bagInsertedTick(void) {
 //sysData.currentSoapWeight = Adc_getWeightUnits();											//what is the weight now?
  	MLX_MODU_OFF();
 	//if( --sysData.tickCounter == 0  ){			//If tick counter == 0 then bag has been left sitting there to long. Time to shut the valve.  V1.18 and below  gk100  commented
+	//#ifdef DEBUG_SERIAL_SPIT
+		//Util_byteToString(Uart_txBuf, (uint8_t)sysData.tickCounter);
+		//Util_strcat(Uart_txBuf, "\r\n");
+		//Uart_transmit(Uart_txBuf);		
+	//#endif	
 	  if(( --sysData.tickCounter == 0  )||(bag_empty==1)){ // gk100  added
 		StateMachine_currentState = ST_IDLE;
 		Transition_biToIdle();					//game over: took too long
@@ -348,6 +357,13 @@ void StateMachine_bagInsertedTick(void) {
 				
 	} else {
 		if( !sysFlags.usingResetKey ) {
+			#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+				Debug_serializeTxPacket(Uart_txBuf);
+				Uart_transmit(Uart_txBuf);
+				//Util_byteToString(Uart_txBuf, (int8_t)System_fillStats.weightUnitsReceived);
+				//Util_strcat(Uart_txBuf, SPACE);
+				//Uart_transmit(Uart_txBuf);	
+			#endif	
 			//does the bag contain any more soap? And the number of bag usages good?
 			if( (System_fillStats.weightUnitsReceived < System_fillStats.ekeyRemainingWeightUnits)
 				&& (System_fillStats.ekeyRemainingFills > 0) ) {
