@@ -13,7 +13,6 @@
 #include <avr/eeprom.h>
 #include "Adc.h"
 #include "SmartLink.h"
-#include "debug.h"		//Clem
 
 extern SYSTEM_FLAGS sysFlags;
 extern SYSTEM_DATA sysData;
@@ -180,12 +179,6 @@ void UartParse_rxMsg() {
 					MLX_MODU_OFF();
 					break;
 					
-				case 'c':			//Clem
-					sysData.currentSoapWeight = Adc_getWeightUnits();
-					Util_byteToString(Uart_DtxBuf, (uint8_t)sysData.currentSoapWeight);
-					Util_strcat(Uart_DtxBuf, "\r\n");
-					Uart_transmit(Uart_DtxBuf);
-									
 				break;					
 				
 				case 'u':

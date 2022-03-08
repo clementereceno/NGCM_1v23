@@ -6,6 +6,8 @@ Adc.c
 
 BitQueue.c
 
+debug.c
+
 SmartLink.c
 
 Uart.c

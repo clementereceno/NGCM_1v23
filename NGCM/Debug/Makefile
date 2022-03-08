@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../Adc.c \
 ../BitQueue.c \
+../debug.c \
 ../SmartLink.c \
 ../Uart.c \
 ../Ekey.c \
@@ -62,6 +63,7 @@ ASM_SRCS +=
 OBJS +=  \
 Adc.o \
 BitQueue.o \
+debug.o \
 SmartLink.o \
 Uart.o \
 Ekey.o \
@@ -78,6 +80,7 @@ Util.o
 OBJS_AS_ARGS +=  \
 Adc.o \
 BitQueue.o \
+debug.o \
 SmartLink.o \
 Uart.o \
 Ekey.o \
@@ -94,6 +97,7 @@ Util.o
 C_DEPS +=  \
 Adc.d \
 BitQueue.d \
+debug.d \
 SmartLink.d \
 Uart.d \
 Ekey.d \
@@ -110,6 +114,7 @@ Util.d
 C_DEPS_AS_ARGS +=  \
 Adc.d \
 BitQueue.d \
+debug.d \
 SmartLink.d \
 Uart.d \
 Ekey.d \
@@ -145,6 +150,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./BitQueue.o: .././BitQueue.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)D:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"D:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\include"  -O1 -ffunction-sections -fpack-struct -fshort-enums -g3 -Wall -mmcu=atmega168a -B "D:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\gcc\dev\atmega168a" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./debug.o: .././debug.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)D:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"D:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\include"  -O1 -ffunction-sections -fpack-struct -fshort-enums -g3 -Wall -mmcu=atmega168a -B "D:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\gcc\dev\atmega168a" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
