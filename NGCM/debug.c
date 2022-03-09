@@ -14,6 +14,7 @@ DB_TX_PACKET db_txData;
 
 extern SYSTEM_FLAGS sysFlags;
 extern SYSTEM_DATA sysData;
+extern DEBUG_DATA dbgData;
 extern DEBUG_FLAGS dbgFlags;
 
 static void db_setTxPacket(void);
@@ -42,5 +43,10 @@ void db_setTxPacket(void) {
 	db_txData.initialWeight = System_fillStats.initialWeight;	
 	db_txData.ntused05 = 0;
 	db_txData.status = dbgFlags.status;
+	db_txData.deltaWeight = dbgData.deltaWeight;
+	db_txData.newWeightUnitsDifference = dbgData.newWeightUnitsDifference;
+	db_txData.unitsReceivedCtr = sysData.unitsReceivedCtr;
 	
+	
+	System_refreshEepromData(&sysData.eepromData);
 }
