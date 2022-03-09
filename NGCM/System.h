@@ -273,7 +273,8 @@ typedef volatile union {
 
 #define NUMBER_READS_TO_IMPRINT 0x03	//must be greater than 1
 
-#define MAX_SOAP_UNITS_DECREMENT	4	//maximum number of soap units to decrement during one sample period.
+//#define MAX_SOAP_UNITS_DECREMENT	4	//maximum number of soap units to decrement during one sample period.
+#define MAX_SOAP_UNITS_DECREMENT	1	//maximum number of soap units to decrement during one sample period.
 
 #define DISPENSER_FULL_SCALE_SOAP_UNITS	100.0
 
