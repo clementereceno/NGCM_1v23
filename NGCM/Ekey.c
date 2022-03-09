@@ -251,11 +251,17 @@ bit Ekey_uidRequest(void) {
 uint8_t Ekey_dockUsage(int howManyRefillUnits, int howManyRefillUses) {
 	uint8_t page;		
 	bit done;
+	int decrement;
 	
 	done = 0;
 	page = 5;		//page '5'
-		
-	l_tagData.weightCounter -= howManyRefillUnits;							//b0 is the fill units remaining counter
+	
+	#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+		decrement = 0;
+	#else
+		decrement = howManyRefillUnits;
+	#endif	
+	l_tagData.weightCounter -= decrement;							//b0 is the fill units remaining counter
 	l_tagData.useCounter -= howManyRefillUses;
 	
 	if(l_tagData.weightCounter < 0) {

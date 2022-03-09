@@ -22,17 +22,16 @@ typedef struct {
 					int8_t			SoapRemainingFills;
 					uint8_t			ReservoirWeightNow;
 					uint8_t			initialWeight;
-					uint8_t			ntused05;
-					uint8_t			ntused06;
-					uint8_t			ntused07;
-					uint8_t			ntused08;
+					int8_t			deltaWeight;
+					int8_t			newWeightUnitsDifference;
+					uint16_t		unitsReceivedCtr;
 					uint8_t			ntused09;
 					uint8_t			ntused10;
 					
 					union {
 						struct {
 							uint8_t		bagGoodFlag		:1;	//b0
-							uint8_t		ntusedbit1		:1;
+							uint8_t		deltaWeightIncreasing		:1;  //have more units been added since last check?
 							uint8_t		ntusedbit2		:1;
 							uint8_t		ntusedbit3		:1;
 							uint8_t		ntusedbit4		:1;

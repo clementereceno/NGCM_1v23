@@ -341,9 +341,9 @@ void Transition_bagInserted(void) {
 				
 				sysFlags.usingResetKey = 0;							//this is not the reset key
 				//Clem
-				#ifdef DEBUG_SERIAL_SPIT
-					Uart_transmit("This is NOT RESET KEY\r\n");
-				#endif				
+				//#ifdef DEBUG_SERIAL_SPIT
+				//	Uart_transmit("This is NOT RESET KEY\r\n");
+				//#endif				
 				
 			} else {	//this is reset key
 				sysData.imprintCounter = 0;							//probably redundant
@@ -356,9 +356,9 @@ void Transition_bagInserted(void) {
 				
 				sysFlags.usingResetKey = 1;
 				//Clem
-				#ifdef DEBUG_SERIAL_SPIT
-					Uart_transmit("This is a RESET KEY\r\n");
-				#endif				
+				//#ifdef DEBUG_SERIAL_SPIT
+				//	Uart_transmit("This is a RESET KEY\r\n");
+				//#endif				
 			}
 						
 #endif	//!DEBUG_SKIP_EKEY_CHECK

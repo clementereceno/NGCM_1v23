@@ -19,6 +19,7 @@
 
 extern SYSTEM_FLAGS sysFlags;
 extern SYSTEM_DATA sysData;
+extern DEBUG_DATA dbgData;
 extern DEBUG_FLAGS dbgFlags;
 
 extern struct_EEPROM_MAP EEPROM l_eeprom; // 19aug19
@@ -383,10 +384,13 @@ void StateMachine_bagInsertedTick(void) {
 				Io_switchToComparator();															//look for power removal
 	
 				deltaWeight = sysData.currentSoapWeight - System_fillStats.initialWeight;					//compare to the initial bag weight
-		
 				if( deltaWeight > (int8_t)System_fillStats.weightUnitsReceived) {							//have more units been added since last check?
 					newWeightUnitsDifference = deltaWeight - (int8_t)System_fillStats.weightUnitsReceived;	//yes, have to dec those units from the ekey 
-				
+					#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+						dbgData.deltaWeight = deltaWeight;
+						dbgData.newWeightUnitsDifference = newWeightUnitsDifference;
+						dbgFlags.deltaWeightIncreasing = 1;
+					#endif				
 					//has to at least and limited to MAX_SOAP_UNITS_DECREMENT
 					if(newWeightUnitsDifference >= (int8_t)MAX_SOAP_UNITS_DECREMENT) {
 						newWeightUnitsDifference = MAX_SOAP_UNITS_DECREMENT;				
@@ -459,6 +463,10 @@ void StateMachine_bagInsertedTick(void) {
 								if( Ekey_dockUsage(newWeightUnitsDifference, 0) ) {						//units have been added: dock them from bag ekey counter via RFID transceiver
 									System_fillStats.weightUnitsReceived += newWeightUnitsDifference;	//all good: update local delivered count
 									sysData.tickCounter = BAG_INSERTED_INACTIVITY_TIMEOUT;				//there has been movement of soap		
+									#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+										Debug_serializeTxPacket(Uart_txBuf);
+										Uart_transmit(Uart_txBuf);
+									#endif										
 								} else {
 									//what happens if usage cannot be docked? I say nothing!
 									System_fillStats.ekeyDockageErrCtr++;	
@@ -481,6 +489,9 @@ void StateMachine_bagInsertedTick(void) {
 						FMOD_OFF();
 	#endif
 					} else {	//weight difference is not enough to act upon
+						#ifdef DEBUG_SERIAL_SPIT			//CLEM  3/8/2022
+							dbgFlags.deltaWeightIncreasing = 0;
+						#endif						
 						System_fillStats.noSoapAddedCtr++;					
 					}
 				}	//end weight check

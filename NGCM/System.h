@@ -149,8 +149,8 @@ typedef volatile union {
 	struct {
 		union {
 			struct {
-				uint8_t	bagGoodFlag		:1;	//b0
-				uint8_t	ntusedbit1	:1;	//wrong ekey code
+				uint8_t	bagGoodFlag				:1;	//b0
+				uint8_t	deltaWeightIncreasing	:1;	//
 				uint8_t	ntusedbit2	:1;
 				uint8_t	ntusedbit3	:1;
 				uint8_t	ntusedbit4		:1;
@@ -399,5 +399,12 @@ typedef struct {
 	EEPROM_DATA eepromData;
 
 } SYSTEM_DATA;
+
+typedef struct {
+	int8_t deltaWeight;
+	int8_t newWeightUnitsDifference;
+
+
+} DEBUG_DATA;
 
 #endif /* SYSTEM_H_ */

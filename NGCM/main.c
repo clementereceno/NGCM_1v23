@@ -70,9 +70,10 @@ int main(void) {
 			           		
 		               if((Uart_rxBuf[0] == SMARTLINK_RX_PACKET_ID) && (Uart_rxBuf[1] =='0') && (Uart_rxBuf[2] == '0')) 
 		                     {	
-							
-		                        SmartLink_serializeTxPacket(Uart_txBuf);  // t100
-		                        Uart_transmit(Uart_txBuf);// t100
+								//#ifndef DEBUG_SERIAL_SPIT
+									SmartLink_serializeTxPacket(Uart_txBuf);  // t100
+									Uart_transmit(Uart_txBuf);// t100
+								//#endif
 								                                           
 						      }
 								Uart_rxBufIdx = 0;
@@ -190,13 +191,18 @@ static void stackEvents(void) {
 				sysFlags.coverOpen = 0;  // t100
 				sysFlags.ekeyPresent = 0; // t100
 				
-				//#if !DEBUG_SERIAL_SPIT_EN
+				#ifndef DEBUG_SERIAL_SPIT
 				//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn 
-				if((bagInsertedErrorFlag==1)||(bagIdealTimeoutFlag==1)) //t100
-				{SmartLink_serializeTxPacket(Uart_txBuf);  // t100
-				Uart_transmit(Uart_txBuf);}// t100
+					if((bagInsertedErrorFlag==1)||(bagIdealTimeoutFlag==1)) //t100
+					{SmartLink_serializeTxPacket(Uart_txBuf);  // t100
+					Uart_transmit(Uart_txBuf);}// t100
 				//nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn-
-				//#endif
+				#else
+					if((bagInsertedErrorFlag==1)) //t100
+					{SmartLink_serializeTxPacket(Uart_txBuf);  // t100
+					Uart_transmit(Uart_txBuf);}// t100
+				#endif
+				
 			}
 			BIT_SET(l_lastInputs, PIND3);
 		} else {
